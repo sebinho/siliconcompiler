@@ -28,12 +28,7 @@ foreach lib [dict get $sc_cfg asic macrolib] {
     }
 }
 
-if {[dict exists $sc_cfg tool $sc_tool task $sc_task {var} induction_steps]} {
-    set sc_induction_steps [lindex [dict get $sc_cfg tool $sc_tool task $sc_task {var} induction_steps] 0]
-} else {
-    # Yosys default
-    set sc_induction_steps 10
-}
+set sc_induction_steps [lindex [dict get $sc_cfg tool $sc_tool task $sc_task {var} induction_steps] 0]
 
 proc prepare_libraries {} {
     global sc_libraries

@@ -39,6 +39,12 @@ def setup(chip):
         # TODO: Not sure this logic makes sense? Seems like reverse of tcl
         # chip.set('tool', tool, 'task', task, 'input', design + '.v', step=step, index=index)
 
+    chip.set('tool', tool, 'task', task, 'var', 'induction_steps', '10',
+             step=step, index=index, clobber=False)
+    chip.set('tool', tool, 'task', task, 'var', 'induction_steps',
+             'Number of induction steps for yosys equivalence checking',
+             field='help')
+
 
 def pre_process(chip):
     if chip.get('option', 'mode') == 'asic':
