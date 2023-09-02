@@ -1,7 +1,7 @@
 import re
 
 from siliconcompiler.tools.yosys.yosys import setup as setup_tool
-from siliconcompiler.tools.yosys.syn_asic import setup_asic
+from siliconcompiler.tools.yosys.syn_asic import setup_asic, prepare_synthesis_libraries
 from siliconcompiler.tools.yosys.syn_fpga import setup_fpga
 from siliconcompiler import sc_open
 
@@ -38,6 +38,11 @@ def setup(chip):
     # if not chip.get('input', 'rtl', 'verilog'):
         # TODO: Not sure this logic makes sense? Seems like reverse of tcl
         # chip.set('tool', tool, 'task', task, 'input', design + '.v', step=step, index=index)
+
+
+def pre_process(chip):
+    if chip.get('option', 'mode') == 'asic':
+        prepare_synthesis_libraries(chip, include_dff=False)
 
 
 ##################################################
