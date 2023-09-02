@@ -98,6 +98,7 @@ def setup(chip):
 
     chip.add('tool', tool, 'task', task, 'output', design + '.sdc', step=step, index=index)
     chip.add('tool', tool, 'task', task, 'output', design + '.vg', step=step, index=index)
+    chip.add('tool', tool, 'task', task, 'output', design + 'lec.vg', step=step, index=index)
     chip.add('tool', tool, 'task', task, 'output', design + '.def', step=step, index=index)
     chip.add('tool', tool, 'task', task, 'output', design + '.odb', step=step, index=index)
 

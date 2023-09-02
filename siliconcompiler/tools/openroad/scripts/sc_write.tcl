@@ -3,3 +3,4 @@ write_sdc "outputs/${sc_design}.sdc"
 
 write_def "outputs/${sc_design}.def"
 write_verilog -include_pwr_gnd "outputs/${sc_design}.vg"
+write_verilog "outputs/${sc_design}.lec.vg"
