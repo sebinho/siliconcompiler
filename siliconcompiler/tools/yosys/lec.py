@@ -1,4 +1,6 @@
+import os
 import re
+import shutil
 
 from siliconcompiler.tools.yosys.yosys import setup as setup_tool
 from siliconcompiler.tools.yosys.syn_asic import setup_asic, prepare_synthesis_libraries
@@ -45,10 +47,41 @@ def setup(chip):
              'Number of induction steps for yosys equivalence checking',
              field='help')
 
+    chip.set('tool', tool, 'task', task, 'var', 'single_node', 'false',
+             step=step, index=index, clobber=False)
+    chip.set('tool', tool, 'task', task, 'var', 'single_node',
+             'true/false, only check the equivalence of a single step',
+             field='help')
+
 
 def pre_process(chip):
+    flow = chip.get('arg', 'flow')
+    step = chip.get('arg', 'step')
+    index = chip.get('arg', 'index')
+    design = chip.top()
+    tool, task = chip._get_tool_task(step, index)
+
     if chip.get('option', 'mode') == 'asic':
         prepare_synthesis_libraries(chip, include_dff=False)
+
+    if chip.get('tool', tool, 'task', task, 'var', 'single_node')[0] == 'true':
+        # Single input, needs to copy input and output netlists from former node
+        in_node = chip.get('flowgraph', flow, step, index, 'input')
+        if len(in_node) != 1:
+            chip.error(f'{step}{index} has {len(in_node)} input nodes, but only supports 1',
+                       fatel=True)
+
+        in_work_dir = chip._getworkdir(step=step, index=index)
+        for ext in ('lec.vg', 'vg'):
+            c_file = os.path.join(in_work_dir, 'inputs', f'{design}.{ext}')
+            if os.path.exists(c_file):
+                shutil.copyfile(c_file, f'inputs/{design}.vg')
+                break
+        for ext in ('lec.vg', 'vg'):
+            c_file = os.path.join(in_work_dir, 'outputs', f'{design}.{ext}')
+            if os.path.exists(c_file):
+                shutil.copyfile(c_file, f'inputs/{design}.lec.vg')
+                break
 
 
 ##################################################
