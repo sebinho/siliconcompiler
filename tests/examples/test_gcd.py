@@ -11,9 +11,9 @@ def __check_gcd(chip):
 
     # Ensure hashes for tool outputs are stored and persist
     assert len(chip.get('tool', 'openroad', 'task', 'dfm', 'output',
-                        step='dfm', index=0, field='filehash')) == 4
+                        step='dfm', index=0, field='filehash')) == 5
     assert len(chip.get('tool', 'openroad', 'task', 'dfm', 'output',
-                        step='dfm', index=0)) == 4
+                        step='dfm', index=0)) == 5
 
     assert chip.get('tool', 'yosys', 'task', 'syn_asic', 'report', 'cellarea',
                     step='syn', index='0') == ['reports/stat.json']

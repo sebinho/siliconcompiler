@@ -176,7 +176,7 @@ def setup_asic(chip):
 ################################
 # mark cells dont use and format liberty files for yosys and abc
 ################################
-def prepare_synthesis_libraries(chip):
+def prepare_synthesis_libraries(chip, include_dff=True):
     tool = 'yosys'
     step = chip.get('arg', 'step')
     index = chip.get('arg', 'index')
@@ -184,16 +184,17 @@ def prepare_synthesis_libraries(chip):
     corners = chip.get('tool', tool, 'task', task, 'var', 'synthesis_corner',
                        step=step, index=index)
 
-    # mark dff libery file with dont use
-    dff_liberty_file = chip.find_files('tool', tool, 'task', task, 'file', 'dff_liberty',
-                                       step=step, index=index)[0]
+    if include_dff:
+        # mark dff libery file with dont use
+        dff_liberty_file = chip.find_files('tool', tool, 'task', task, 'file', 'dff_liberty',
+                                        step=step, index=index)[0]
 
-    with open(chip.get('tool', tool, 'task', task, 'file', 'dff_liberty_file',
-                       step=step, index=index)[0], 'w') as f:
-        f.write(prepareLib.processLibertyFile(
-            dff_liberty_file,
-            logger=None if chip.get('option', 'quiet', step=step, index=index) else chip.logger
-        ))
+        with open(chip.get('tool', tool, 'task', task, 'file', 'dff_liberty_file',
+                        step=step, index=index)[0], 'w') as f:
+            f.write(prepareLib.processLibertyFile(
+                dff_liberty_file,
+                logger=None if chip.get('option', 'quiet', step=step, index=index) else chip.logger
+            ))
 
     # Generate synthesis_libraries and synthesis_macro_libraries for Yosys use
 
