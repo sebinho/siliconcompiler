@@ -27,7 +27,7 @@ def setup(chip, syn_np=1, floorplan_np=1, physyn_np=1, place_np=1, cts_np=1, rou
     chip.use(freepdk45)
     chip.use(nangate45)
     chip.use(lintflow)
-    chip.use(asicflow, **asic_flow_args)
+    chip.use(asicflow, multi=True, **asic_flow_args)
     chip.use(asictopflow)
 
     # 2. Setup default show tools

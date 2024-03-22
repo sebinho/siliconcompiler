@@ -3079,7 +3079,16 @@ If you are sure that your working directory is valid, try running `cd $(pwd)`.""
         Copy (link) output data from previous steps
         '''
 
-        design = self.get('design')
+        def copy_file(_, in_job, in_step, in_index):
+            design = self.get('design')
+            shutil.copytree(f"../../../{in_job}/{in_step}/{in_index}/outputs", 'inputs/',
+                            dirs_exist_ok=True,
+                            ignore=shutil.ignore_patterns(f'{design}.pkg.json'),
+                            copy_function=utils.link_symlink_copy)
+
+        task_module = self._get_task_module(step, index)
+        input_file_handler = getattr(task_module, '_input_file_copy', copy_file)
+
         flow = self.get('option', 'flow')
         in_job = self._get_in_job(step, index)
         if not self._get_pruned_node_inputs(flow, (step, index)):
@@ -3096,10 +3105,7 @@ If you are sure that your working directory is valid, try running `cd $(pwd)`.""
             # Skip copying pkg.json files here, since we write the current chip
             # configuration into inputs/{design}.pkg.json earlier in _runstep.
             if not replay:
-                shutil.copytree(f"../../../{in_job}/{in_step}/{in_index}/outputs", 'inputs/',
-                                dirs_exist_ok=True,
-                                ignore=shutil.ignore_patterns(f'{design}.pkg.json'),
-                                copy_function=utils.link_symlink_copy)
+                input_file_handler(self, in_job, in_step, in_index)
 
     def _pre_process(self, step, index):
         flow = self.get('option', 'flow')

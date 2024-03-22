@@ -1,6 +1,6 @@
 import siliconcompiler
 
-from siliconcompiler.flows._common import setup_frontend
+from siliconcompiler.flows._common import setup_frontend, setup_multiple_frontends
 
 from siliconcompiler.tools.yosys import syn_asic
 from siliconcompiler.tools.openroad import floorplan
@@ -33,7 +33,8 @@ def setup(chip,
           physyn_np=1,
           place_np=1,
           cts_np=1,
-          route_np=1):
+          route_np=1,
+          multi=False):
     '''
     A configurable ASIC compilation flow.
 
@@ -119,12 +120,17 @@ def setup(chip,
             flowpipe.append(step)
         prevstep = step
 
-    flowtasks = setup_frontend(chip)
+    prevstep = None
+    flowtasks = []
+    if multi:
+        prevstep = setup_multiple_frontends(chip, flow)
+    else:
+        flowtasks = setup_frontend(chip)
+
     for step in flowpipe:
         flowtasks.append((step, tasks[step]))
 
     # Programmatically build linear portion of flowgraph and fanin/fanout args
-    prevstep = None
     for step, task in flowtasks:
         fanout = 1
         if step in np:
