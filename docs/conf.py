@@ -73,8 +73,7 @@ suppress_warnings = ['autosectionlabel.*']
 html_theme = 'sphinx_rtd_theme'
 
 html_theme_options = {
-    "collapse_navigation": True,
-    'logo_only': True,
+    "collapse_navigation": False,
     'display_version': True,
     'navigation_depth': 4,
 }
@@ -89,6 +88,7 @@ html_theme_options = {
 #
 # html_sidebars = {}
 
+html_logo = '_static/sc_logo_with_text.png'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -121,13 +121,6 @@ latex_preamble = r"""\newcommand{\origunderscore}{}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
-
-_stdauthor = author
-
-latex_documents = [
-    ('index', 'siliconcompiler.tex', 'SiliconCompiler',
-        _stdauthor, 'manual'),
-]
 
 latex_elements = {
     'extraclassoptions': 'openany,oneside',  # Don't add blank pages after some chapters
