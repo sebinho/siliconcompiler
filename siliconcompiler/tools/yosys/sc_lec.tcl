@@ -109,6 +109,8 @@ prepare_design gold $gold_source
 # Gate netlist
 if {[file exists "inputs/${sc_design}.lec.vg"]} {
     set gate_source "inputs/${sc_design}.lec.vg"
+} elseif {[file exists "inputs/${sc_design}.vg"]} {
+    set gate_source "inputs/${sc_design}.vg"
 } else {
     set gate_source [dict get $sc_cfg input netlist verilog]
 }
