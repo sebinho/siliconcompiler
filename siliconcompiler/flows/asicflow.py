@@ -14,6 +14,8 @@ from siliconcompiler.tools.klayout import export as klayout_export
 
 from siliconcompiler.tools.builtin import minimum
 
+from siliconcompiler.tools.yosys import lec
+
 
 ############################################################################
 # DOCS
@@ -165,6 +167,19 @@ def setup(chip,
     flow.node(flowname, 'export', openroad_export, index=1)
     flow.edge(flowname, prevstep, 'export', head_index=0)
     flow.edge(flowname, prevstep, 'export', head_index=1)
+
+    flow.node(flowname, 'lec_syn', lec)
+    flow.edge(flowname, 'import', 'lec_syn')
+    flow.edge(flowname, 'syn', 'lec_syn')
+    flow.node(flowname, 'lec_floorplan', lec)
+    flow.edge(flowname, 'import', 'lec_floorplan')
+    flow.edge(flowname, 'floorplan', 'lec_floorplan')
+    flow.node(flowname, 'lec_place', lec)
+    flow.edge(flowname, 'import', 'lec_place')
+    flow.edge(flowname, 'place', 'lec_place')
+    flow.node(flowname, 'lec_cts', lec)
+    flow.edge(flowname, 'import', 'lec_cts')
+    flow.edge(flowname, 'cts', 'lec_cts')
 
     return flow
 
