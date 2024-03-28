@@ -41,7 +41,7 @@ cython
 #:docs
 Sphinx == 7.2.6
 pip-licenses == 4.3.4
-sphinx-rtd-theme == 2.0.0
+pydata-sphinx-theme == 0.15.2
 
 # Testing dependencies
 #:test

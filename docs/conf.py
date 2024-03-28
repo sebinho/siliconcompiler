@@ -70,12 +70,19 @@ suppress_warnings = ['autosectionlabel.*']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
 
 html_theme_options = {
-    "collapse_navigation": False,
-    'display_version': True,
-    'navigation_depth': 4,
+    "collapse_navigation": True,
+    "show_toc_level": 3,   # this automatically displays three levels
+    "logo": {
+        "image_light": 'sc_logo_with_text.png',
+        "image_dark": 'sc_logo_with_text.png',
+    },
+    "github_url": "https://github.com/siliconcompiler/siliconcompiler",  # these are top right
+
+    # Add light/dark mode and documentation version switcher:
+    "navbar_end": ["theme-switcher", "navbar-icon-links"]
 }
 
 # Custom sidebar templates, must be a dictionary that maps document names
@@ -85,10 +92,10 @@ html_theme_options = {
 # defined by theme itself.  Builtin themes are using these templates by
 # default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
 # 'searchbox.html']``.
-#
-# html_sidebars = {}
 
-html_logo = '_static/sc_logo_with_text.png'
+html_sidebars = {
+  "index": []
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
